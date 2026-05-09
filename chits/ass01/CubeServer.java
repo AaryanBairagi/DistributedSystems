@@ -8,7 +8,7 @@ public class CubeServer
         {
             CubeImpl obj = new CubeImpl();
 
-            Naming.rebind("rmi://localhost/CubeService", obj);
+            Naming.rebind("rmi://localhost/CubeService", obj); //cubService -> Stub 
 
             System.out.println("Cube RMI Server Started...");
         }

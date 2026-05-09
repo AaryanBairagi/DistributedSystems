@@ -22,10 +22,10 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     // Get total number of processes
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_size(MPI_COMM_WORLD, &size); // 4
 
     // Divide work among processes
-    for(int i = rank; i < 8; i += size)
+    for(int i = rank; i < 8; i += size) //rank = 8 localSum = 1+ 5 = 6  ; p0 = 6 
     {
         local_sum += arr[i];
     }
