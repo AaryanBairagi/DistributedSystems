@@ -1,0 +1,9 @@
+module CalculatorApp
+{
+    interface Calculator
+    {
+        long add(in long a, in long b);
+    };
+};
+
+//to run use and generate Client Stub And Server Skeleton : idlj -fall Calculator.idl
