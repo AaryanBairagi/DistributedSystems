@@ -1,0 +1,537 @@
+# 19) Addition Web Service Distributed Application
+
+# Aim
+
+Create a simple web service and write an addition of two numbers distributed application to consume the web service.
+
+---
+
+# Step 1 — Create Web Application
+
+In NetBeans:
+
+```text id="r6x4m1"
+File
+→ New Project
+→ Java Web
+→ Web Application
+```
+
+Project Name:
+
+```text id="m7n8x0"
+AdditionWS
+```
+
+Choose:
+
+* GlassFish Server
+* Java EE 7
+
+Finish.
+
+---
+
+# Step 2 — Create Web Service
+
+```text id="u9v4p2"
+Right Click Project
+→ New
+→ Web Service
+```
+
+Class Name:
+
+```text id="h1k7t9"
+AddService
+```
+
+Package:
+
+```text id="a4d9r6"
+com.add
+```
+
+---
+
+# Step 3 — Service Code
+
+## `AddService.java`
+
+```java id="g3n7b5"
+package com.add;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod;
+
+@WebService(serviceName = "AddService")
+public class AddService
+{
+    @WebMethod
+    public int add(int a, int b)
+    {
+        return a + b;
+    }
+}
+```
+
+---
+
+# Step 4 — Run Project
+
+Right Click Project:
+
+```text id="k0p8q2"
+Run
+```
+
+Browser opens with WSDL:
+
+```text id="u3c9x5"
+http://localhost:8080/AdditionWS/AddService?wsdl
+```
+
+---
+
+# Step 5 — Create Client Application
+
+```text id="r1w7z8"
+File
+→ New Project
+→ Java Application
+```
+
+Project Name:
+
+```text id="x8m3v1"
+AdditionClient
+```
+
+---
+
+# Step 6 — Consume Web Service
+
+```text id="n4t6k0"
+Right Click Client Project
+→ New
+→ Web Service Client
+```
+
+Paste WSDL URL.
+
+Finish.
+
+---
+
+# Step 7 — Client Code
+
+## `Main.java`
+
+```java id="z7y5x4"
+package additionclient;
+
+import java.util.Scanner;
+
+public class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        int a, b;
+
+        System.out.print("Enter First Number: ");
+        a = sc.nextInt();
+
+        System.out.print("Enter Second Number: ");
+        b = sc.nextInt();
+
+        int result = add(a, b);
+
+        System.out.println("Addition = " + result);
+    }
+
+    private static int add(int a, int b)
+    {
+        com.add.AddService_Service service =
+        new com.add.AddService_Service();
+
+        com.add.AddService port =
+        service.getAddServicePort();
+
+        return port.add(a, b);
+    }
+}
+```
+
+---
+
+# Sample Output
+
+```text id="t9q3v7"
+Enter First Number: 10
+Enter Second Number: 20
+
+Addition = 30
+```
+
+---
+
+# 20) Subtraction Web Service
+
+# Service Code
+
+## `SubService.java`
+
+```java id="m5v7x2"
+package com.sub;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod;
+
+@WebService(serviceName = "SubService")
+public class SubService
+{
+    @WebMethod
+    public int subtract(int a, int b)
+    {
+        return a - b;
+    }
+}
+```
+
+---
+
+# Client Code
+
+## `Main.java`
+
+```java id="w4x8n1"
+package subtractionclient;
+
+import java.util.Scanner;
+
+public class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        int a, b;
+
+        System.out.print("Enter First Number: ");
+        a = sc.nextInt();
+
+        System.out.print("Enter Second Number: ");
+        b = sc.nextInt();
+
+        int result = subtract(a, b);
+
+        System.out.println("Subtraction = " + result);
+    }
+
+    private static int subtract(int a, int b)
+    {
+        com.sub.SubService_Service service =
+        new com.sub.SubService_Service();
+
+        com.sub.SubService port =
+        service.getSubServicePort();
+
+        return port.subtract(a, b);
+    }
+}
+```
+
+---
+
+# 21) Multiplication Web Service
+
+# Service Code
+
+## `MulService.java`
+
+```java id="e9w2k7"
+package com.mul;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod;
+
+@WebService(serviceName = "MulService")
+public class MulService
+{
+    @WebMethod
+    public int multiply(int a, int b)
+    {
+        return a * b;
+    }
+}
+```
+
+---
+
+# Client Code
+
+## `Main.java`
+
+```java id="b2q6t8"
+package multiplicationclient;
+
+import java.util.Scanner;
+
+public class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        int a, b;
+
+        System.out.print("Enter First Number: ");
+        a = sc.nextInt();
+
+        System.out.print("Enter Second Number: ");
+        b = sc.nextInt();
+
+        int result = multiply(a, b);
+
+        System.out.println("Multiplication = " + result);
+    }
+
+    private static int multiply(int a, int b)
+    {
+        com.mul.MulService_Service service =
+        new com.mul.MulService_Service();
+
+        com.mul.MulService port =
+        service.getMulServicePort();
+
+        return port.multiply(a, b);
+    }
+}
+```
+
+---
+
+# 22) Division Web Service
+
+# Service Code
+
+## `DivService.java`
+
+```java id="s7m3p1"
+package com.div;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod;
+
+@WebService(serviceName = "DivService")
+public class DivService
+{
+    @WebMethod
+    public float divide(int a, int b)
+    {
+        return (float)a / b;
+    }
+}
+```
+
+---
+
+# Client Code
+
+## `Main.java`
+
+```java id="h9v6x3"
+package divisionclient;
+
+import java.util.Scanner;
+
+public class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        int a, b;
+
+        System.out.print("Enter First Number: ");
+        a = sc.nextInt();
+
+        System.out.print("Enter Second Number: ");
+        b = sc.nextInt();
+
+        float result = divide(a, b);
+
+        System.out.println("Division = " + result);
+    }
+
+    private static float divide(int a, int b)
+    {
+        com.div.DivService_Service service =
+        new com.div.DivService_Service();
+
+        com.div.DivService port =
+        service.getDivServicePort();
+
+        return port.divide(a, b);
+    }
+}
+```
+
+---
+
+# 23) Sign-Up Form Distributed Application
+
+# Step 1 — Create Web Application
+
+Project Name:
+
+```text id="t7n4x9"
+SignupWS
+```
+
+---
+
+# Step 2 — Create Web Service
+
+## `SignupService.java`
+
+```java id="y8r3m6"
+package com.signup;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod;
+
+@WebService(serviceName = "SignupService")
+public class SignupService
+{
+    @WebMethod
+    public String signup(String username,
+                         String password)
+    {
+        return "User Registered Successfully";
+    }
+}
+```
+
+---
+
+# Step 3 — Create HTML Form
+
+## `index.html`
+
+```html id="q2m8v5"
+<html>
+<head>
+<title>Sign Up Form</title>
+</head>
+
+<body>
+
+<h2>Sign Up Form</h2>
+
+<form>
+
+Username:
+<input type="text" name="username">
+
+<br><br>
+
+Password:
+<input type="password" name="password">
+
+<br><br>
+
+<input type="submit" value="Register">
+
+</form>
+
+</body>
+</html>
+```
+
+---
+
+# Step 4 — Client Code
+
+## `Main.java`
+
+```java id="p6w3n8"
+package signupclient;
+
+import java.util.Scanner;
+
+public class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        String username, password;
+
+        System.out.print("Enter Username: ");
+        username = sc.nextLine();
+
+        System.out.print("Enter Password: ");
+        password = sc.nextLine();
+
+        String result =
+        signup(username, password);
+
+        System.out.println(result);
+    }
+
+    private static String signup(String username,
+                                 String password)
+    {
+        com.signup.SignupService_Service service =
+        new com.signup.SignupService_Service();
+
+        com.signup.SignupService port =
+        service.getSignupServicePort();
+
+        return port.signup(username, password);
+    }
+}
+```
+
+---
+
+# Common Viva Questions
+
+## Q1. What is SOAP?
+
+SOAP is a protocol used for exchanging XML-based messages between distributed applications.
+
+---
+
+## Q2. What is WSDL?
+
+WSDL stands for Web Service Description Language.
+
+---
+
+## Q3. What is `@WebService` annotation?
+
+It converts Java class into web service.
+
+---
+
+## Q4. What is `@WebMethod`?
+
+It exposes method to clients.
+
+---
+
+# Common Execution Flow
+
+## Create Web Service
+
+## Deploy on GlassFish
+
+## Open WSDL
+
+## Generate Client
+
+## Consume Service
