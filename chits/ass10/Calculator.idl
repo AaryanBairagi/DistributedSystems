@@ -6,4 +6,3 @@ module CalculatorApp
     };
 };
 
-//to run use and generate Client Stub And Server Skeleton : idlj -fall Calculator.idl
