@@ -27,7 +27,8 @@ int main(int argc, char *argv[])
     // Root process takes array size input
     if(rank == 0)
     {
-        printf("Enter array size: ");
+        printf("Enter array size: \n");
+        fflush(stdout);
         scanf("%d", &n);
     }
 
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
     // Root process takes array elements
     if(rank == 0)
     {
-        printf("Enter %d elements:\n", n);
+        printf("Enter %d elements of the array:\n", n);
 
         for(int i = 0; i < n; i++)
         {
@@ -49,8 +50,7 @@ int main(int argc, char *argv[])
     }
 
     // Broadcast array to all processes
-    MPI_Bcast(arr, n, MPI_INT, 0, MPI_COMM_WORLD);
-
+    MPI_Bcast(arr, n, MPI_INT, 0, MPI_COMM_WORLD); //MPI_Bcast(buffer, count, datatype, root, communicator); //buffer:data to send
     // Divide work among processes
     for(int i = rank; i < n; i += size)
     {

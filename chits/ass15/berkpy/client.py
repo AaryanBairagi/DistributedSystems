@@ -1,120 +1,95 @@
-# =========================================================
-# Berkeley Clock Synchronization - Client Process
-# =========================================================
-
-# ---------------- IMPORT REQUIRED MODULES ----------------
-
-# Used to parse date-time strings received from server
 from dateutil import parser
-
-# Used for multithreading
 import threading
-
-# Used for current date and time
 import datetime
-
-# Used for socket programming
 import socket
-
-# Used to add delay
 import time
 
+# Simulated client clock offset
+client_time_offset = datetime.timedelta(seconds=0)
 
-# =========================================================
-# FUNCTION: SEND CLIENT TIME TO SERVER
-# =========================================================
-# This function continuously sends the client's current
-# system time to the server every 5 seconds.
-# =========================================================
 
+# Function to get client's local time
+def getClientTime():
+    return datetime.datetime.now() + client_time_offset
+
+
+# Send local time to server
 def startSendingTime(slave_client):
 
     while True:
 
-        # Get current client time
-        current_time = str(datetime.datetime.now())
+        try:
+            current_time = getClientTime()
 
-        # Send encoded time to server
-        slave_client.send(current_time.encode())
+            slave_client.send(str(current_time).encode())
 
-        print("Recent time sent successfully")
+            print("Time sent to server:", current_time)
 
-        # Wait for 5 seconds
-        time.sleep(5)
+            time.sleep(5)
+
+        except Exception as e:
+            print("Connection to server lost")
+            break
 
 
-# =========================================================
-# FUNCTION: RECEIVE SYNCHRONIZED TIME FROM SERVER
-# =========================================================
-# This function continuously receives the synchronized
-# clock time calculated by the server.
-# =========================================================
-
+# Receive synchronization adjustment from server
 def startReceivingTime(slave_client):
+
+    global client_time_offset
 
     while True:
 
-        # Receive synchronized time from server
-        synchronized_time = slave_client.recv(1024).decode()
+        try:
+            adjustment = float(
+                slave_client.recv(1024).decode()
+            )
 
-        # Convert string into datetime object
-        synchronized_time = parser.parse(synchronized_time)
+            # Apply adjustment
+            client_time_offset += datetime.timedelta(
+                seconds=adjustment
+            )
 
-        print("Synchronized time at the client is:",
-              synchronized_time)
+            synchronized_time = getClientTime()
+
+            print("\nClock adjusted by:", adjustment, "seconds")
+            print("New synchronized client time:", synchronized_time)
+
+        except Exception as e:
+            print("Failed to receive synchronized time")
+            break
 
 
-# =========================================================
-# FUNCTION: INITIALIZE CLIENT
-# =========================================================
-# Creates socket connection with server and starts:
-# 1. Sending thread
-# 2. Receiving thread
-# =========================================================
+# Start Client
+def initiateSlaveClient(port=8080):
 
-def initiateSlaveClient(port = 8080):
-
-    # Create client socket
     slave_client = socket.socket()
 
-    # Connect to server
     slave_client.connect(('127.0.0.1', port))
 
-    print("Connected to Clock Server\n")
+    print("Connected to Clock Server")
 
-    # -----------------------------------------------------
-    # THREAD 1 -> SEND TIME TO SERVER
-    # -----------------------------------------------------
-
+    # Thread for sending time
     send_time_thread = threading.Thread(
-        target = startSendingTime,
-        args = (slave_client,)
+        target=startSendingTime,
+        args=(slave_client,)
     )
 
+    send_time_thread.daemon = True
     send_time_thread.start()
 
-    print("Started sending time to server\n")
-
-
-    # -----------------------------------------------------
-    # THREAD 2 -> RECEIVE SYNCHRONIZED TIME
-    # -----------------------------------------------------
-
+    # Thread for receiving adjustment
     receive_time_thread = threading.Thread(
-        target = startReceivingTime,
-        args = (slave_client,)
+        target=startReceivingTime,
+        args=(slave_client,)
     )
 
+    receive_time_thread.daemon = True
     receive_time_thread.start()
 
-    print("Started receiving synchronized time\n")
+    while True:
+        time.sleep(1)
 
 
-# =========================================================
-# DRIVER CODE
-# =========================================================
-
+# Driver Code
 if __name__ == '__main__':
-
-    # Start client process
-    initiateSlaveClient(port = 8080)
+    initiateSlaveClient(port=8080)
