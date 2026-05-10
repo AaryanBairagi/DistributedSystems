@@ -1,40 +1,78 @@
-import java.util.Scanner;
+import java.util.*;
 
-public class Bully
-{
-    public static void main(String args[])
-    {
+class Bully {
+
+    public static void main(String args[]) {
+
         Scanner sc = new Scanner(System.in);
 
-        int n;
-
         System.out.print("Enter number of processes: ");
-        n = sc.nextInt();
+        int n = sc.nextInt();
 
         int processes[] = new int[n];
+        boolean active[] = new boolean[n];
 
-        System.out.println("Enter process IDs:");
+        // Input processes
+        for(int i = 0; i < n; i++) {
 
-        for(int i = 0; i < n; i++)
-        {
+            System.out.print("Enter Process ID: ");
             processes[i] = sc.nextInt();
+
+            active[i] = true;
         }
 
-        System.out.print("Enter failed coordinator: ");
-        int fail = sc.nextInt();
+        // Current coordinator
+        int coordinator = processes[n - 1];
 
-        int coordinator = -1;
+        System.out.println(
+            "Current Coordinator is Process "
+            + coordinator
+        );
 
-        for(int i = 0; i < n; i++)
-        {
-            if(processes[i] != fail)
-            {
-                coordinator = Math.max(coordinator,
-                                       processes[i]);
+        // Crash coordinator
+        active[n - 1] = false;
+
+        System.out.println(
+            "Process " + coordinator + " has crashed!"
+        );
+
+        // Election initiator
+        System.out.print(
+            "Enter process initiating election: "
+        );
+
+        int initiator = sc.nextInt();
+
+        int newCoordinator = initiator;
+
+        System.out.println("\nElection Started...\n");
+
+        for(int i = 0; i < n; i++) {
+
+            if(processes[i] > initiator && active[i]) {
+
+                System.out.println(
+                    "Process " + initiator +
+                    " sends ELECTION message to Process "
+                    + processes[i]
+                );
+
+                System.out.println(
+                    "Process " + processes[i] +
+                    " sends OK message"
+                );
+
+                newCoordinator = processes[i];
             }
         }
 
         System.out.println(
-        "New Coordinator is Process " + coordinator);
+            "\nProcess " + newCoordinator +
+            " becomes NEW COORDINATOR"
+        );
+
+        System.out.println(
+            "Coordinator message sent to all processes"
+        );
     }
 }
