@@ -1,0 +1,9 @@
+Tokenring 5
+bully 
+ring
+
+
+terminal 1
+	cd file path
+	javac *.java
+	java filename(w/o extension0)

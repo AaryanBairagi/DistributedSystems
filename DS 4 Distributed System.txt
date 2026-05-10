@@ -1,0 +1,7 @@
+DS 4: Distributed System
+1) 1st terminal: cd file path
+2) python3 server.py
+
+1) 2nd terminal: cd file path
+2) python3 client.py
+(Run the client file 3-4 times in different terminals to see the output in server terminal)
