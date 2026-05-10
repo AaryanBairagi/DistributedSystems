@@ -1,0 +1,7 @@
+//To check MPI: mpicc --version
+
+//To compile: mpicc mpi_sum.c -o mpi_sum
+
+//To run: mpirun -np 4 ./mpi_sum
+
+// 4means no. of child processes change it dynamicaly as per need

@@ -31,6 +31,8 @@ public class CalculatorClient
 
             System.out.println(
             "Addition = " + obj.add(a, b));
+
+            System.out.println("Subtraction = " + obj.sub(a,b));
         }
         catch(Exception e)
         {
