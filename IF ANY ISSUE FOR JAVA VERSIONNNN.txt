@@ -1,0 +1,7 @@
+IF ANY ISSUE FOR JAVA VERSIONNNN
+
+1) 1st terminal: cd file path copy 
+2) If any Version problem comes type before java Server 
+3) del *.class
+4) javac --release 8 *.java
+5) java Server
