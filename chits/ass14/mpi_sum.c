@@ -50,8 +50,7 @@ int main(int argc, char *argv[])
     }
 
     // Broadcast array to all processes
-    MPI_Bcast(arr, n, MPI_INT, 0, MPI_COMM_WORLD);
-
+    MPI_Bcast(arr, n, MPI_INT, 0, MPI_COMM_WORLD); //MPI_Bcast(buffer, count, datatype, root, communicator); //buffer:data to send
     // Divide work among processes
     for(int i = rank; i < n; i += size)
     {
